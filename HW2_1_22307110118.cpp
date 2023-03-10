@@ -35,7 +35,7 @@ struct Word
 vector<Word> count(const vector<string> &wd)
 {
     if (wd.empty())
-        throw domain_error("counting on an empty vector");
+        throw domain_error("No words entered. Please try again!");
     vector<Word> result;
     for (auto &&i : wd)
     {
@@ -70,9 +70,9 @@ int main()
     {
         answer = count(words);
     }
-    catch (domain_error)
+    catch (domain_error e)
     {
-        cout << "You shall enter some words. Please try again." << endl;
+        cout << e.what() << endl;
         return 1;
     }
     cout << "number of the words: " << words.size() << endl;
