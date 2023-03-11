@@ -19,7 +19,7 @@ int main()
 			record.total = grade(record);
 		students.push_back(record);
 	}
-	sort(students.begin(), students.end(), compare);
+	stable_sort(students.begin(), students.end(), compare);
 	for (auto &&i : students)
 	{
 		cout << i.name << string(maxlen + 1 - i.name.size(), ' ');
