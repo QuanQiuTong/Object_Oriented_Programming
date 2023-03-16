@@ -37,13 +37,14 @@ vector<Word> count(const vector<string> &wd)
     if (wd.empty())
         throw domain_error("No words entered. Please try again!");
     vector<Word> result;
-    for (auto &&i : wd)
+    for (vector<string>::size_type it = 0; it != wd.size(); ++it)
     {
+        string i = wd[it];
         Word cur;
-        for (auto &&j : result)
-            if (equal(i, j.word))
+        for (vector<Word>::size_type iter = 0; iter != result.size(); ++iter)
+            if (equal(i, result[iter].word))
             {
-                j.cnt++;
+                result[iter].cnt++;
                 goto loop;
             }
         cur.word = i;
@@ -78,8 +79,9 @@ int main()
     cout << "number of the words: " << words.size() << endl;
 
     // Print the word in the form of the first encountered.
-    for (auto &&i : answer)
+    for (vector<Word>::size_type it = 0; it != answer.size(); ++it)
     {
+        Word i = answer[it];
         cout << i.word;
         for (str_sz j = maxlen - i.word.size() + 1; j--;)
             cout << ' ';
