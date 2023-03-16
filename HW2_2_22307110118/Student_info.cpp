@@ -3,10 +3,13 @@ using std::istream;
 using std::vector;
 bool compare(const Student_info &x, const Student_info &y)
 {
-    if (x.homework.empty())
-        return true; // Empty ones goes first.
     if (y.homework.empty())
-        return false;
+        return false; // Empty ones goes first.
+    /*else */ if (x.homework.empty())
+        return true; // This strategy perfectly satisfies the operator<
+    // if x.empty()&&y.empty() then return false
+    // else if y.empty() then return false
+    // else if x.empty() then return true
     return x.total > y.total;
 }
 istream &read(istream &is, Student_info &s)
