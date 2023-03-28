@@ -17,8 +17,7 @@ template <class container>
 void print(container con)
 {
 	typename container::iterator it = con.begin();
-	std::cout << *it++;
-	for (; it != con.end(); ++it)
+	for (std::cout << *it++; it != con.end(); ++it)
 		std::cout << "  " << *it;
 	std::cout << std::endl;
 }
