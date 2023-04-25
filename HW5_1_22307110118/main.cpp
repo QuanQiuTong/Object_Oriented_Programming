@@ -1,12 +1,15 @@
 #include <algorithm>
+#include <cstdlib>
+#include <ctime>
+#include <fstream>
 #include <iomanip>
 #include <ios>
 #include <iostream>
-#include <fstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
 #include "grade.h"
+#include "median.h"
 #include "Student_info.h"
 
 using std::cin;				using std::setprecision;
@@ -57,6 +60,20 @@ int main()
 		cout << endl;
 		fout << endl;
 	}
+
+	cout << "the following is the result of testing  median function on array\n"
+			"the random array is:\n";
+	srand(time(NULL));
+	int a[11];
+	size_t len = sizeof(a) / sizeof(*a);
+	for (size_t i = 0; i != len; ++i)
+		cout << (a[i] = rand() % 100) << ' ';
+	cout << endl;
+	cout << "the median of the array is: " << median(a, a + len) << endl;
+	cout << "after the median function called, the array is unchanged:\n";
+	for (size_t i = 0; i != len; ++i)
+		cout << a[i] << ' ';
+	cout << endl;
 	return 0;
 }
 
