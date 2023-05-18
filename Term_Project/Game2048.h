@@ -3,7 +3,6 @@
 #include <ctime>
 #include <cstdio>
 #include <cstring>
-#include <cassert>
 #include "lib.h"
 #include "Board.h"
 
@@ -14,13 +13,17 @@ private:
     time_t begin;
 
 public:
-    Game2048() : board(), begin(time(NULL)) {}
+    Game2048() : board(), begin(time(NULL)) { puts("Welcome to the game of 2048!"); }
     ~Game2048()
     {
         time_t last = time(NULL) - begin;
         puts("Game over.");
         FILE *fp = fopen("game2048.csv", "a");
-        assert(fp);
+        if (NULL == fp)
+        {
+            puts("Failed to open \"game2048.csv\".");
+            return;
+        }
         fprintf(fp, "%s,%lld,%d\n", strtok(ctime(&begin), "\n"), (long long)last, score());
         fclose(fp);
     }
@@ -46,8 +49,8 @@ public:
             }
     }
     unsigned score() const { return board.score(); }
-    void printBoard() const { board.print(); }
+    void printBoard() const { board.print(), printf("Your score: %d\n", score()); }
     bool end() const { return board.end(); }
-    void move(Dir dir) { board.move(dir); }
+    bool move(Dir dir) { return board.move(dir); }
     bool randomInsert() { return board.randomInsert(); }
 };

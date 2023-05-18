@@ -1,9 +1,7 @@
 #include "lib.h"
 #include "Board.h"
-#include <cstring>
 #include <cstdio>
 
-Board::Board() : _score(0u) { memset(grid, 0, sizeof grid); }
 void Board::print() const
 {
     puts("|-----|-----|-----|-----|");
@@ -12,8 +10,7 @@ void Board::print() const
         putchar('|');
         for (int j = 0; j < 4; ++j)
             printf(grid[i][j] ? "%4u |" : "     |", grid[i][j]);
-        putchar('\n');
-        puts("|-----|-----|-----|-----|");
+        puts("\n|-----|-----|-----|-----|");
     }
 }
 bool Board::full() const
@@ -23,35 +20,7 @@ bool Board::full() const
             return false;
     return true;
 }
-long Board::end() const
-{
-    long f = 0;
-    {
-        Board t(*this);
-        t.move(down);
-        f |= !t.full();
-        f <<= 1;
-    }
-    {
-        Board t(*this);
-        t.move(up);
-        f |= !t.full();
-        f <<= 1;
-    }
-    {
-        Board t(*this);
-        t.move(right);
-        f |= !t.full();
-        f <<= 1;
-    }
-    {
-        Board t(*this);
-        t.move(left);
-        f |= !t.full();
-        f <<= 1;
-    }
-    return f;
-}
+
 int Board::randomInsert()
 {
     int empty[16], cnt = 0;
@@ -74,7 +43,7 @@ void Board::_left(unsigned g[])
         if (g[i])
             swap(g[cnt++], g[i]);
 }
-void Board::move(Dir d)
+bool Board::move(Dir d)
 {
     switch (d)
     {
@@ -111,39 +80,35 @@ void Board::move(Dir d)
                 swap(grid[i][j], grid[3 - j][3 - i]);
         break;
     default:
-        perror("Wrong direction");
+        return false;
     }
+    return !full();
 }
-
-#if 0
-#include <windows.h>
-#define read() ({int x,c,f=1;while((c=getchar())<48||57<c)if(c=='-')f=-1;for(x=c^48;47<(c=getchar())&&c<58;x=x*10+(c^48));x*f; })
-
-int main()
+bool Board::end() const
 {
-    Board b;
-    // b.grid[0][0]=b.grid[0][1]=b.grid[0][2]=2;b.print();b.move(Board::left);
-    for (char buf[1024];;)
     {
-        system("cls");
-        b.print();
-        scanf("%s", buf);
-        if (buf[0] == 'e')
-        {
-            int x = read(), y = read(), v = read();
-            b.debug(x, y, v);
-        }
-        else if (buf[0] == 'i')
-            b.randomInsert();
-        else if (buf[0] == 'a')
-            b.move(left);
-        else if (buf[0] == 's')
-            b.move(down);
-        else if (buf[0] == 'd')
-            b.move(right);
-        else if (buf[0] == 'w')
-            b.move(up);
+        Board t(*this);
+        t.move(down);
+        if (!t.full())
+            return false;
     }
-    return 0;
+    {
+        Board t(*this);
+        t.move(up);
+        if (!t.full())
+            return false;
+    }
+    {
+        Board t(*this);
+        t.move(right);
+        if (!t.full())
+            return false;
+    }
+    {
+        Board t(*this);
+        t.move(left);
+        if (!t.full())
+            return false;
+    }
+    return true;
 }
-#endif
