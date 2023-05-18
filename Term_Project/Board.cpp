@@ -3,18 +3,18 @@
 #include <cstring>
 #include <cstdio>
 
-Board::Board() : _score(0u) { memset(grid, 0, sizeof grid), randomInsert(), randomInsert(); }
+Board::Board() : _score(0u) { memset(grid, 0, sizeof grid); }
 void Board::print() const
 {
     puts("|-----|-----|-----|-----|");
-    printf("|%4u |%4u |%4u |%4u |\n", grid[0][0], grid[0][1], grid[0][2], grid[0][3]);
-    puts("|-----|-----|-----|-----|");
-    printf("|%4u |%4u |%4u |%4u |\n", grid[1][0], grid[1][1], grid[1][2], grid[1][3]);
-    puts("|-----|-----|-----|-----|");
-    printf("|%4u |%4u |%4u |%4u |\n", grid[2][0], grid[2][1], grid[2][2], grid[2][3]);
-    puts("|-----|-----|-----|-----|");
-    printf("|%4u |%4u |%4u |%4u |\n", grid[3][0], grid[3][1], grid[3][2], grid[3][3]);
-    puts("|-----|-----|-----|-----|");
+    for (int i = 0; i < 4; ++i)
+    {
+        putchar('|');
+        for (int j = 0; j < 4; ++j)
+            printf(grid[i][j] ? "%4u |" : "     |", grid[i][j]);
+        putchar('\n');
+        puts("|-----|-----|-----|-----|");
+    }
 }
 bool Board::full() const
 {
@@ -23,11 +23,34 @@ bool Board::full() const
             return false;
     return true;
 }
-bool Board::end() const
+long Board::end() const
 {
-    Board t(*this);
-    t.move(left), t.move(right), t.move(up), t.move(down);
-    return t.full();
+    long f = 0;
+    {
+        Board t(*this);
+        t.move(down);
+        f |= !t.full();
+        f <<= 1;
+    }
+    {
+        Board t(*this);
+        t.move(up);
+        f |= !t.full();
+        f <<= 1;
+    }
+    {
+        Board t(*this);
+        t.move(right);
+        f |= !t.full();
+        f <<= 1;
+    }
+    {
+        Board t(*this);
+        t.move(left);
+        f |= !t.full();
+        f <<= 1;
+    }
+    return f;
 }
 int Board::randomInsert()
 {
@@ -44,13 +67,9 @@ void Board::_left(unsigned g[])
     for (int i = 0, cnt = 0; i < 4; ++i)
         if (g[i])
             swap(g[cnt++], g[i]);
-    // puts("*");print();
-    if (!g[0])
-        return;
     for (int i = 1; i < 4 && g[i]; ++i)
         if (g[i] == g[i - 1])
             _score += g[i - 1] += g[i], g[i] = 0;
-    // puts("#");print();
     for (int i = 0, cnt = 0; i < 4; ++i)
         if (g[i])
             swap(g[cnt++], g[i]);
