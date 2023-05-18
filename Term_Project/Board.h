@@ -1,18 +1,20 @@
 #pragma once
 
+#include <cstring>
+
 class Board
 {
-public:
+private:
     unsigned grid[4][4], _score;
     void _left(unsigned g[]);
 
 public:
-    Board();
-    void debug(int x, int y, int val) { grid[x][y] = val; }
+    Board() { memset(this, 0, sizeof(Board)); }
+    bool operator!=(const Board &rhs) {return memcmp(this->grid, rhs.grid, 16); }
     unsigned score() const { return _score; }
     void print() const;
     bool full() const;
-    bool end() const;
     int randomInsert();
-    void move(Dir d);
+    bool move(Dir d);
+    bool end() const;
 };
