@@ -5,8 +5,11 @@
 std::istream &Handle::read(std::istream &in)
 {
     delete p;
+    p = 0;
     char ch;
     in >> ch;
+    if (!bool(in))
+        return in;
     if (ch == 'T')
     {
         double edge[3];

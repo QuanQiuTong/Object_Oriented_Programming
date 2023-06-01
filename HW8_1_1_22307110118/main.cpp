@@ -5,11 +5,11 @@
 #include <ios>
 #include <iomanip>
 #include <stdexcept>
+#include <fstream>
 
 #include "Core.h"
 #include "Grad.h"
 
-using std::cin;
 using std::cout;
 using std::domain_error;
 using std::endl;
@@ -23,16 +23,16 @@ using std::vector;
 int main()
 {
     vector<Core *> students;
-
+    std::ifstream fin("grades2");
     string ::size_type maxlen = 0;
-    for (char ch; cin >> ch;)
+    for (char ch; fin >> ch;)
     {
         Core *record;
         if (ch == 'U')
             record = new Core;
-        else /* if (ch == 'G')*/
+        else if (ch == 'G')
             record = new Grad;
-        record->read(cin);
+        record->read(fin);
         maxlen = max(maxlen, record->name().size());
         students.push_back(record);
     }

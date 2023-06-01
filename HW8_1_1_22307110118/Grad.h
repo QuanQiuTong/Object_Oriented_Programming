@@ -13,7 +13,7 @@ public:
     Grad(std::istream &is) { read(is); }
 
     std::istream &read(std::istream &in) { return read_hw(read_common(in) >> thesis, homework); }
-    double Grad::grade() const { return std::min(Core::grade(), thesis); }
+    double grade() const { return std::min(Core::grade(), thesis); }
 
 private:
     double thesis;
