@@ -9,7 +9,12 @@ struct Shape
     virtual double area() const = 0;
     virtual double perimeter() const = 0;
     virtual Shape *clone() const = 0;
-    // bool operator<(const Shape &rhs) const { return area() < rhs.area(); }
+    
+    
+    // 下面我写的这两行注释都是扯淡。保留下来以便重温迷惑的过程，增进对代码的理解。
+    // Class Shape is a virtual base class, having NO object.
+    // Thus the following operator would never be called, because NO object provides "this" pointer.
+    bool operator<(const Shape &rhs) const { return area() < rhs.area(); }
 };
 
 class Triangle : public Shape
